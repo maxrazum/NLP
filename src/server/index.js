@@ -1,23 +1,37 @@
-var path = require('path')
-const express = require('express')
-const mockAPIResponse = require('./mockAPI.js')
+const dotenv = require('dotenv');
+dotenv.config();
 
-const app = express()
+const path = require('path');
+const express = require('express');
+const fetch = require("node-fetch");
+const cors = require('cors');
 
-app.use(express.static('dist'))
+// instantiate app
+const app = express();
+app.use(express.static('dist'));
+app.use(cors())
 
-console.log(__dirname)
+/*Middleware*/
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 
 app.get('/', function (req, res) {
-    // res.sendFile('dist/index.html')
-    res.sendFile(path.resolve('src/client/views/index.html'))
+    res.sendFile(path.resolve('src/client/views/index.html'));
 })
 
 // designates what port the app will listen to for incoming requests
-app.listen(8080, function () {
-    console.log('Example app listening on port 8080!')
-})
+const PORT = process.env.PORT || 8081
+server = app.listen(PORT, console.log(`Analyzer App listening on port ${PORT}`))
 
-app.get('/test', function (req, res) {
-    res.send(mockAPIResponse)
-})
+// POST request to API to fetch data
+app.post('/apiData', async(req, res) => {
+    const response = await fetch(`https://api.meaningcloud.com/sentiment-2.1?key=${process.env.API_KEY}&lang=auto&url=${req.body.formUrl}`);
+    try {
+        const data = await response.json();
+        res.send(data);
+    } catch(error) {
+        console.log("error", error);
+    }
+});
