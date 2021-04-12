@@ -5,7 +5,7 @@ function handleSubmit(event) {
   let formUrl = document.getElementById('url').value;
 
   if (Client.validURL(formUrl)) {
-    fetch('/apiData', {
+    fetch('http://localhost:8081/apiData', {
       method: 'POST',
       credentials: 'same-origin',
       mode: 'cors',
