@@ -24,6 +24,8 @@ module.exports = {
         ]
     },
     output: {
+        path: path.resolve(__dirname, './dist'),
+        filename: 'index_bundle.js',
         libraryTarget: 'var',
         library: 'Client'
     },
