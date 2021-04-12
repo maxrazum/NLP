@@ -9,6 +9,7 @@ module.exports = {
     mode: 'development',
     devtool: 'source-map',
     stats: 'verbose',
+    target : 'node',
     module: {
         rules: [
             {
